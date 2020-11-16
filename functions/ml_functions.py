@@ -58,8 +58,8 @@ class AveragingModels(BaseEstimator, RegressorMixin, TransformerMixin):
         ])
         return np.mean(predictions, axis=1)
 
-class StackingAverageModels(BaseEstimator,RegressorMixin,TransformerMixin):
-    '''Less simple Stacking : Adding a Meta-model
+class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
+      '''Less simple Stacking : Adding a Meta-model
         1. Split the total training set into disjoint sets (here traind amd .holdout)
         2. Train several base modles on the first part (train)
         3. ThTest these base models on the second part (holdout)
@@ -67,39 +67,39 @@ class StackingAverageModels(BaseEstimator,RegressorMixin,TransformerMixin):
         inputs, and the correct responses (target variable) as the outputs to 
         train a higher level learner called meta-model.
         '''
-    def __init__(self,base_models,meta_model,n_folds):
+    def __init__(self, base_models, meta_model, n_folds=5):
         self.base_models = base_models
         self.meta_model = meta_model
         self.n_folds = n_folds
-
-    # Fit the data on colne of the origanal models
-    def fit(self,X,y):
-        self.base_models_ = [list () for x self.base_models]
+   
+    # We again fit the data on clones of the original models
+    def fit(self, X, y):
+        self.base_models_ = [list() for x in self.base_models]
         self.meta_model_ = clone(self.meta_model)
-        kfold = KFold(n_splits=self.n_folds, shuffle=True, random_state=None)
+        kfold = KFold(n_splits=self.n_folds, shuffle=True, random_state=156)
+        
         # Train cloned base models then create out-of-fold predictions
-        # that are need to train the colned meta-model
+        # that are needed to train the cloned meta-model
         out_of_fold_predictions = np.zeros((X.shape[0], len(self.base_models)))
-        for i,model in enumerate(self.base_models):
-            for train_index,holdout_index in kfold.split(X,y):
+        for i, model in enumerate(self.base_models):
+            for train_index, holdout_index in kfold.split(X, y):
                 instance = clone(model)
                 self.base_models_[i].append(instance)
-                instance.fit(X[Train_index])
+                instance.fit(X[train_index], y[train_index])
                 y_pred = instance.predict(X[holdout_index])
-                out_of_fold_predictions[holdout_index,i] = y_pred
-
-        # Now train the cloned metal-model using the pou-of-fold predictios as new feature
-            self.meta_model_.fit(out_of_fold_predictions,y)
-            return self
-
+                out_of_fold_predictions[holdout_index, i] = y_pred
+                
+        # Now train the cloned  meta-model using the out-of-fold predictions as new feature
+        self.meta_model_.fit(out_of_fold_predictions, y)
+        return self
+   
     #Do the predictions of all base models on the test data and use the averaged predictions as 
     #meta-features for the final prediction which is done by the meta-model
     def predict(self, X):
         meta_features = np.column_stack([
             np.column_stack([model.predict(X) for model in base_models]).mean(axis=1)
             for base_models in self.base_models_ ])
-        return self.meta_model_.predict(meta_features)  
-
+        return self.meta_model_.predict(meta_features)
 
 
 
