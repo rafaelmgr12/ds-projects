@@ -1,4 +1,4 @@
-import numpy as np # linear algebra
+import numpy as np  # linear algebra
 
 from sklearn.linear_model import ElasticNet, Lasso,  BayesianRidge, LassoLarsIC
 from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor
@@ -18,56 +18,59 @@ from sklearn.model_selection import cross_val_score, KFold, train_test_split
 
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
 # Regressors
-from sklearn.ensemble import RandomForestRegressor,AdaBoostRegressor
+from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor
 from xgboost import XGBRegressor
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge, Lasso
 
 
-def train_models(X,y,kfolds):
+def train_models(X, y, kfolds):
     kfold = KFold(kfolds)
     for model in models:
      # model['regressor'].fit(X,y)
-      cf_result =  cross_val_score(model['regressor'], X, y, cv=kfold,scoring='neg_mean_squared_log_error')
+      cf_result = cross_val_score(
+          model['regressor'], X, y, cv=kfold, scoring='neg_mean_squared_log_error')
       model['cv_results'] = np.sqrt(cf_result*-1)
-      msg = f"Regressor: {model['name']},   rmsle:{cf_result.mean().round(11)} " 
+      msg = f"Regressor: {model['name']},   rmsle:{cf_result.mean().round(11)} "
       print(msg)
-    
-    
+
+
 class AveragingModels(BaseEstimator, RegressorMixin, TransformerMixin):
     '''Simplest Stacking approach : Averaging base models
        We begin with this simple approach of averaging base models. We build a new class to extend scikit-learn with our model and also to laverage encapsulation and code reuse (inheritance)
        Averaged base models class'''
+
     def __init__(self, models):
         self.models = models
-        
+
     # we define clones of the original models to fit the data in
     def fit(self, X, y):
         self.models_ = [clone(x) for x in self.models]
-        
+
         # Train cloned base models
         for model in self.models_:
             model.fit(X, y)
 
         return self
-    
-    #Now we do the predictions for cloned models and average them
+
+    # Now we do the predictions for cloned models and average them
     def predict(self, X):
         predictions = np.column_stack([
             model.predict(X) for model in self.models_
         ])
         return np.mean(predictions, axis=1)
 
+
 class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
-      '''Less simple Stacking : Adding a Meta-model
+    '''Less simple Stacking : Adding a Meta-model
         1. Split the total training set into disjoint sets (here traind amd .holdout)
         2. Train several base modles on the first part (train)
         3. ThTest these base models on the second part (holdout)
-        4. Use the predictions from 3) (called out-of-folds predictions) as the 
-        inputs, and the correct responses (target variable) as the outputs to 
+        4. Use the predictions from 3) (called out-of-folds predictions) as the
+        inputs, and the correct responses (target variable) as the outputs to
         train a higher level learner called meta-model.
-        '''
-    def __init__(self, base_models, meta_model, n_folds=5):
+    '''
+    def __init__(self, base_models, meta_model, n_folds):
         self.base_models = base_models
         self.meta_model = meta_model
         self.n_folds = n_folds
@@ -93,8 +96,8 @@ class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
         self.meta_model_.fit(out_of_fold_predictions, y)
         return self
    
-    #Do the predictions of all base models on the test data and use the averaged predictions as 
-    #meta-features for the final prediction which is done by the meta-model
+    # Do the predictions of all base models on the test data and use the averaged predictions as 
+    # meta-features for the final prediction which is done by the meta-model
     def predict(self, X):
         meta_features = np.column_stack([
             np.column_stack([model.predict(X) for model in base_models]).mean(axis=1)
@@ -104,7 +107,7 @@ class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
 
 
 
-#Validation function
+# Validation function
 def rmsle_cv(model):
     '''Return the rmse form a model'''
     kf = KFold(n_folds, shuffle=True, random_state=42).get_n_splits(train.values)
