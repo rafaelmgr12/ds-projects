@@ -30,7 +30,7 @@ from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor
 from xgboost import XGBRegressor
 from sklearn.svm import SVR
 from sklearn.linear_model import Ridge, Lasso
-
+import itertools
 import matplotlib.pyplot as plt
 
 
@@ -133,7 +133,8 @@ def sssplit(X, y, nsplits):
 
 def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
-    f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2,2, figsize=(20,14), sharey=True)
+    f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
+        2, 2, figsize=(20, 14), sharey=True)
     if ylim is not None:
         plt.ylim(*ylim)
     # First Estimator
@@ -157,8 +158,8 @@ def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, yl
     ax1.set_ylabel('Score')
     ax1.grid(True)
     ax1.legend(loc="best")
-    
-    # Second Estimator 
+
+    # Second Estimator
     train_sizes, train_scores, test_scores = learning_curve(
         estimator2, X, y, cv=cv, n_jobs=n_jobs, train_sizes=train_sizes)
     train_scores_mean = np.mean(train_scores, axis=1)
@@ -179,7 +180,7 @@ def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, yl
     ax2.set_ylabel('Score')
     ax2.grid(True)
     ax2.legend(loc="best")
-    
+
     # Third Estimator
     train_sizes, train_scores, test_scores = learning_curve(
         estimator3, X, y, cv=cv, n_jobs=n_jobs, train_sizes=train_sizes)
@@ -201,7 +202,7 @@ def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, yl
     ax3.set_ylabel('Score')
     ax3.grid(True)
     ax3.legend(loc="best")
-    
+
     # Fourth Estimator
     train_sizes, train_scores, test_scores = learning_curve(
         estimator4, X, y, cv=cv, n_jobs=n_jobs, train_sizes=train_sizes)
@@ -226,18 +227,68 @@ def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, yl
     return plt
 
 
-def graph_roc_curve_multiple(log_fpr, log_tpr, knear_fpr, knear_tpr, svc_fpr, svc_tpr, tree_fpr, tree_tpr):
-    plt.figure(figsize=(16,8))
+def graph_roc_curve_multiple(log_fpr, log_tpr, knear_fpr, knear_tpr, svc_fpr, svc_tpr, tree_fpr, tree_tpr, y_train,log_reg_pred,knears_pred,svc_pred,tree_pred):
+    plt.figure(figsize=(16, 8))
     plt.title('ROC Curve \n Top 4 Classifiers', fontsize=18)
-    plt.plot(log_fpr, log_tpr, label='Logistic Regression Classifier Score: {:.4f}'.format(roc_auc_score(y_train, log_reg_pred)))
-    plt.plot(knear_fpr, knear_tpr, label='KNears Neighbors Classifier Score: {:.4f}'.format(roc_auc_score(y_train, knears_pred)))
-    plt.plot(svc_fpr, svc_tpr, label='Support Vector Classifier Score: {:.4f}'.format(roc_auc_score(y_train, svc_pred)))
-    plt.plot(tree_fpr, tree_tpr, label='Decision Tree Classifier Score: {:.4f}'.format(roc_auc_score(y_train, tree_pred)))
+    plt.plot(log_fpr, log_tpr, label='Logistic Regression Classifier Score: {:.4f}'.format(
+        roc_auc_score(y_train, log_reg_pred)))
+    plt.plot(knear_fpr, knear_tpr, label='KNears Neighbors Classifier Score: {:.4f}'.format(
+        roc_auc_score(y_train, knears_pred)))
+    plt.plot(svc_fpr, svc_tpr, label='Support Vector Classifier Score: {:.4f}'.format(
+        roc_auc_score(y_train, svc_pred)))
+    plt.plot(tree_fpr, tree_tpr, label='Decision Tree Classifier Score: {:.4f}'.format(
+        roc_auc_score(y_train, tree_pred)))
     plt.plot([0, 1], [0, 1], 'k--')
     plt.axis([-0.01, 1, 0, 1])
     plt.xlabel('False Positive Rate', fontsize=16)
     plt.ylabel('True Positive Rate', fontsize=16)
     plt.annotate('Minimum ROC Score of 50% \n (This is the minimum score to get)', xy=(0.5, 0.5), xytext=(0.6, 0.3),
-                arrowprops=dict(facecolor='#6E726D', shrink=0.05),
-                )
+                 arrowprops=dict(facecolor='#6E726D', shrink=0.05),
+                 )
     plt.legend()
+
+
+def logistic_roc_curve(log_fpr, log_tpr):
+    plt.figure(figsize=(12, 8))
+    plt.title('Logistic Regression ROC Curve', fontsize=16)
+    plt.plot(log_fpr, log_tpr, 'b-', linewidth=2)
+    plt.plot([0, 1], [0, 1], 'r--')
+    plt.xlabel('False Positive Rate', fontsize=16)
+    plt.ylabel('True Positive Rate', fontsize=16)
+    plt.axis([-0.01, 1, 0, 1])
+
+
+# Create a confusion matrix
+def plot_confusion_matrix(cm, classes,
+                          normalize=False,
+                          title='Confusion matrix',
+                          cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    print(cm)
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title, fontsize=14)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
