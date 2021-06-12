@@ -157,3 +157,18 @@ class Class_Fit(object):
     def grid_predict(self, X, Y):
         self.predictions = self.grid.predict(X)
         print("Precision: {:.2f} % ".format(100*accuracy_score(Y, self.predictions)))
+
+def tts_split(X, y, size, splits):
+    '''Split the data in Train and
+     test using the Shuffle split'''
+
+    rs = ShuffleSplit(n_splits=splits, test_size=size)
+
+    rs.get_n_splits(X)
+
+    for train_index, test_index in rs.split(X, y):
+        # print("TRAIN:", train_index, "TEST:", test_index)
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+    return X_train, X_test, y_train, y_test
+
