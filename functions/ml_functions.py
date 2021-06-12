@@ -131,4 +131,28 @@ def sssplit(X, y, nsplits):
     return original_Xtrain, original_Xtest, original_ytrain, original_ytest
 
 
+class Class_Fit(object):
+    """
+    Fit and tuning an algorithim for classification
+    """
+    def __init__(self, clf, params=None):
+        if params:            
+            self.clf = clf(**params)
+        else:
+            self.clf = clf()
 
+    def train(self, x_train, y_train):
+        self.clf.fit(x_train, y_train)
+
+    def predict(self, x):
+        return self.clf.predict(x)
+    
+    def grid_search(self, parameters, Kfold):
+        self.grid = GridSearchCV(estimator = self.clf, param_grid = parameters, cv = Kfold)
+        
+    def grid_fit(self, X, Y):
+        self.grid.fit(X, Y)
+        
+    def grid_predict(self, X, Y):
+        self.predictions = self.grid.predict(X)
+        print("Precision: {:.2f} % ".format(100*metrics.accuracy_score(Y, self.predictions)))
