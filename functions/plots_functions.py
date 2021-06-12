@@ -3,32 +3,38 @@ from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import seaborn as sns
-from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.metrics import silhouette_samples, silhouette_score, roc_auc_score
+from sklearn.feature_extraction.text import TfidfVectorizer
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.patches as mpatches
 import numpy as np
+import pandas as pd
+import itertools
 import cv2
 from sklearn.model_selection import GridSearchCV, learning_curve
+vectorizer = TfidfVectorizer()
+
 
 def display_multiple_img(images_paths, rows, cols):
     """
     Function to Display Images from Dataset.
-    
+
     parameters: images_path(string) - Paths of Images to be displayed
                 rows(int) - No. of Rows in Output
                 cols(int) - No. of Columns in Output
     """
-    figure, ax = plt.subplots(nrows=rows,ncols=cols,figsize=(16,8) )
-    for ind,image_path in enumerate(images_paths):
-        image=cv2.imread(image_path)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
+    figure, ax = plt.subplots(nrows=rows, ncols=cols, figsize=(16, 8))
+    for ind, image_path in enumerate(images_paths):
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         try:
             ax.ravel()[ind].imshow(image)
             ax.ravel()[ind].set_axis_off()
         except:
-            continue;
+            continue
     plt.tight_layout()
     plt.show()
+
 
 def plotSilhouette(df, n_clusters, kmeans_labels, silhouette_avg):
     fig, ax1 = plt.subplots(1)
@@ -111,6 +117,19 @@ def centroidsDict(centroids, index):
         centroid_dict.update({a[i, 0]: a[i, 1]})
 
     return centroid_dict
+
+
+def display_importances(feature_importance_df_):
+    cols = feature_importance_df_[["feature", "importance"]].groupby(
+        "feature").mean().sort_values(by="importance", ascending=False)[:40].index
+    best_features = feature_importance_df_.loc[feature_importance_df_.feature.isin(
+        cols)]
+    plt.figure(figsize=(8, 10))
+    sns.barplot(x="importance", y="feature", data=best_features.sort_values(
+        by="importance", ascending=False))
+    plt.title('LightGBM Features (avg over folds)')
+    plt.tight_layout()
+    plt.savefig('lgbm_importances01.png')
 
 
 def generateWordClouds(centroids):
@@ -290,7 +309,7 @@ def graph_component_silhouette(n_clusters, lim_x, mat_size, sample_silhouette_va
 
 
 def plot_learning_curve_2(estimator1, estimator2, estimator3, estimator4, X, y, ylim=None, cv=None,
-                        n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
+                          n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
     f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
         2, 2, figsize=(20, 14), sharey=True)
     if ylim is not None:

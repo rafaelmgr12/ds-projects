@@ -6,6 +6,14 @@ from nltk.tokenize import word_tokenize
 from nltk import SnowballStemmer
 import pandas as pd
 
+def remove_URL(text):
+    url = re.compile(r'https?://\S+|www\.\S+')
+    return url.sub(r'',text)
+
+def remove_html(text):
+    html=re.compile(r'<.*?>')
+    return html.sub(r'',text)
+
 # removes a list of words (ie. stopwords) from a tokenized list.
 
 

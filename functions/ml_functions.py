@@ -1,4 +1,5 @@
 import numpy as np  # linear algebra
+from bayes_opt import BayesianOptimization
 
 from sklearn.linear_model import ElasticNet, Lasso,  BayesianRidge, LassoLarsIC
 from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor
@@ -10,6 +11,8 @@ from sklearn.model_selection import KFold, cross_val_score, train_test_split
 from sklearn.metrics import mean_squared_error
 import xgboost as xgb
 from sklearn.model_selection import KFold, StratifiedKFold
+import gc
+from lightgbm import LGBMClassifier
 
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report
 from sklearn.model_selection import GridSearchCV
@@ -118,14 +121,14 @@ class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
         return self.meta_model_.predict(meta_features)
 
 
-def sssplit(X, y, nsplits):
-    '''This functions it to lead with unbaleced data set, and 
+def sss_plit(X, y, nsplits):
+    '''This functions it to lead with unbaleced data set, and
     make new balanced splits into train and test .
     '''
     sss = StratifiedKFold(n_splits=nsplits, random_state=None, shuffle=False)
 
     for train_index, test_index in sss.split(X, y):
-        print("Train:", train_index, "Test:", test_index)
+        # print("Train:", train_index, "Test:", test_index)
         original_Xtrain, original_Xtest = X.iloc[train_index], X.iloc[test_index]
         original_ytrain, original_ytest = y.iloc[train_index], y.iloc[test_index]
 
@@ -136,8 +139,9 @@ class Class_Fit(object):
     """
     Fit and tuning an algorithim for classification
     """
+
     def __init__(self, clf, params=None):
-        if params:            
+        if params:
             self.clf = clf(**params)
         else:
             self.clf = clf()
@@ -147,16 +151,20 @@ class Class_Fit(object):
 
     def predict(self, x):
         return self.clf.predict(x)
-    
+
     def grid_search(self, parameters, Kfold):
-        self.grid = GridSearchCV(estimator = self.clf, param_grid = parameters, cv = Kfold, n_jobs=-1)
-        
+        self.grid = GridSearchCV(
+            estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
+
     def grid_fit(self, X, Y):
         self.grid.fit(X, Y)
-        
+
     def grid_predict(self, X, Y):
         self.predictions = self.grid.predict(X)
-        print("Precision: {:.2f} % ".format(100*accuracy_score(Y, self.predictions)))
+        print("Precision: {:.2f} % ".format(
+            100*accuracy_score(Y, self.predictions)),
+            "\n ROC Score: {:.2f}".format(roc_auc_score(Y, self.predictions)))
+        print('\n',classification_report(Y, self.predictions))
 
 def tts_split(X, y, size, splits):
     '''Split the data in Train and
@@ -171,4 +179,6 @@ def tts_split(X, y, size, splits):
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
     return X_train, X_test, y_train, y_test
+
+# Display/plot feature importance
 
