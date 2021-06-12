@@ -12,6 +12,7 @@ import xgboost as xgb
 from sklearn.model_selection import KFold, StratifiedKFold
 
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report
+from sklearn.model_selection import GridSearchCV
 
 
 from sklearn.model_selection import ShuffleSplit
@@ -155,4 +156,4 @@ class Class_Fit(object):
         
     def grid_predict(self, X, Y):
         self.predictions = self.grid.predict(X)
-        print("Precision: {:.2f} % ".format(100*metrics.accuracy_score(Y, self.predictions)))
+        print("Precision: {:.2f} % ".format(100*accuracy_score(Y, self.predictions)))
