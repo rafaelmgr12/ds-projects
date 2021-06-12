@@ -288,7 +288,7 @@ def graph_component_silhouette(n_clusters, lim_x, mat_size, sample_silhouette_va
         y_lower = y_upper + 10
 
 
-def plot_learning_curve(estimator1, estimator2, estimator3, estimator4, X, y, ylim=None, cv=None,
+def plot_learning_curve_2(estimator1, estimator2, estimator3, estimator4, X, y, ylim=None, cv=None,
                         n_jobs=1, train_sizes=np.linspace(.1, 1.0, 5)):
     f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(
         2, 2, figsize=(20, 14), sharey=True)
