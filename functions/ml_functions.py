@@ -149,7 +149,7 @@ class Class_Fit(object):
         return self.clf.predict(x)
     
     def grid_search(self, parameters, Kfold):
-        self.grid = GridSearchCV(estimator = self.clf, param_grid = parameters, cv = Kfold)
+        self.grid = GridSearchCV(estimator = self.clf, param_grid = parameters, cv = Kfold, n_jobs=-1)
         
     def grid_fit(self, X, Y):
         self.grid.fit(X, Y)
