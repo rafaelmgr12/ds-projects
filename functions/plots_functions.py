@@ -8,6 +8,7 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.patches as mpatches
 import numpy as np
 import cv2
+from sklearn.model_selection import GridSearchCV, learning_curve
 
 def display_multiple_img(images_paths, rows, cols):
     """
