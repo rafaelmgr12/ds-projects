@@ -1,3 +1,6 @@
+[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/Home-Credit-Default-Risk/Home_Credit_Default_Risk.ipynb)
+
+
 
 ![img](https://storage.googleapis.com/kaggle-media/competitions/home-credit/about-us-home-credit.jpg)
 # Home Credit Default Risk
