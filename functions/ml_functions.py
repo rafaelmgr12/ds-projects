@@ -1,41 +1,24 @@
 import numpy as np  # linear algebra
-from bayes_opt import BayesianOptimization
 
-from sklearn.linear_model import ElasticNet, Lasso,  BayesianRidge, LassoLarsIC
-from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import RobustScaler
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
-from sklearn.model_selection import KFold, cross_val_score, train_test_split
-from sklearn.metrics import mean_squared_error
-import xgboost as xgb
-from sklearn.model_selection import KFold, StratifiedKFold
 import gc
-from lightgbm import LGBMClassifier
 
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report
-from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report,mean_squared_error
 
-
-from sklearn.model_selection import ShuffleSplit
-from sklearn.model_selection import learning_curve
+from sklearn.model_selection import learning_curve,ShuffleSplit,GridSearchCV,RandomizedSearchCV
 import matplotlib.patches as mpatches
 
 from sklearn.feature_selection import SelectKBest
 from sklearn.preprocessing import StandardScaler
 import category_encoders as ce
 from sklearn.metrics import mean_squared_log_error
-from sklearn.model_selection import cross_val_score, KFold, train_test_split
+from sklearn.model_selection import cross_val_score, KFold, train_test_split, cross_val_score, train_test_split,StratifiedKFold
 
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
 # Regressors
-from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor
-from xgboost import XGBRegressor
-from sklearn.svm import SVR
-from sklearn.linear_model import Ridge, Lasso
-import itertools
-import matplotlib.pyplot as plt
 
 
 def train_models(X, y, kfolds, models):
@@ -155,7 +138,8 @@ class Class_Fit(object):
     def grid_search(self, parameters, Kfold):
         self.grid = GridSearchCV(
             estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
-
+    def random_search(self,parameters,Kfold):
+        self.grid = RandomizedSearchCV(estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
     def grid_fit(self, X, Y):
         self.grid.fit(X, Y)
 
