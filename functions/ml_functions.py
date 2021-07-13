@@ -6,18 +6,15 @@ from sklearn.preprocessing import RobustScaler
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
 import gc
 
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report,mean_squared_error
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report, mean_squared_error
 
-from sklearn.model_selection import learning_curve,ShuffleSplit,GridSearchCV,RandomizedSearchCV
-import matplotlib.patches as mpatches
+from sklearn.model_selection import learning_curve, ShuffleSplit, GridSearchCV, RandomizedSearchCV
 
 from sklearn.feature_selection import SelectKBest
 from sklearn.preprocessing import StandardScaler
 import category_encoders as ce
 from sklearn.metrics import mean_squared_log_error
-from sklearn.model_selection import cross_val_score, KFold, train_test_split, cross_val_score, train_test_split,StratifiedKFold
-
-from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
+from sklearn.model_selection import cross_val_score, KFold, train_test_split, cross_val_score, train_test_split, StratifiedKFold
 # Regressors
 
 
@@ -138,8 +135,11 @@ class Class_Fit(object):
     def grid_search(self, parameters, Kfold):
         self.grid = GridSearchCV(
             estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
-    def random_search(self,parameters,Kfold):
-        self.grid = RandomizedSearchCV(estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
+
+    def random_search(self, parameters, Kfold):
+        self.grid = RandomizedSearchCV(
+            estimator=self.clf, param_grid=parameters, cv=Kfold, n_jobs=-1)
+
     def grid_fit(self, X, Y):
         self.grid.fit(X, Y)
 
@@ -148,7 +148,8 @@ class Class_Fit(object):
         print("Precision: {:.2f} % ".format(
             100*accuracy_score(Y, self.predictions)),
             "\n ROC Score: {:.2f}".format(roc_auc_score(Y, self.predictions)))
-        print('\n',classification_report(Y, self.predictions))
+        print('\n', classification_report(Y, self.predictions))
+
 
 def tts_split(X, y, size, splits):
     '''Split the data in Train and
@@ -165,4 +166,3 @@ def tts_split(X, y, size, splits):
     return X_train, X_test, y_train, y_test
 
 # Display/plot feature importance
-
