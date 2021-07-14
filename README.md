@@ -16,5 +16,5 @@ Projects in Data Science, Machine Learning and Kaggle Competitions
 ### [House Prices Advanced Regression Techniques](https://github.com/rafaelmgr12/ds-projects/tree/main/House-Prices-Advanced-Regression-Techniques)
 ### [Predict Future Sales](https://github.com/rafaelmgr12/ds-projects/tree/main/Predict-Future-Sales)
 ### [Home Credit Default Risk](https://github.com/rafaelmgr12/ds-projects/tree/main/Home-Credit-Default-Risk)
-### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Titanic)
+### [Titanic](https://github.com/rafaelmgr12/ds-projects/tree/main/Titanic)
 ### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Desafios)
