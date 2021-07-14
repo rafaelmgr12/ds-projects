@@ -1,4 +1,4 @@
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/House-Prices-Advanced-Regression-Techniques/SalesHouse_Kaggle2.ipynb)
+[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/Titanic/Titanic.ipynb)
 # 👋🛳️ Ahoy, welcome to Kaggle! You’re in the right place.
 This is the legendary Titanic ML competition – the best, first challenge for you to dive into ML competitions and familiarize yourself with how the Kaggle platform works.
 
