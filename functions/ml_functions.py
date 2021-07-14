@@ -6,14 +6,13 @@ from sklearn.preprocessing import RobustScaler
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
 import gc
 
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report, mean_squared_error
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score, accuracy_score, classification_report, mean_squared_error,mean_squared_log_error
 
 from sklearn.model_selection import learning_curve, ShuffleSplit, GridSearchCV, RandomizedSearchCV
 
 from sklearn.feature_selection import SelectKBest
 from sklearn.preprocessing import StandardScaler
 import category_encoders as ce
-from sklearn.metrics import mean_squared_log_error
 from sklearn.model_selection import cross_val_score, KFold, train_test_split, cross_val_score, train_test_split, StratifiedKFold
 # Regressors
 
@@ -146,8 +145,10 @@ class Class_Fit(object):
     def grid_predict(self, X, Y):
         self.predictions = self.grid.predict(X)
         print("Precision: {:.2f} % ".format(
-            100*accuracy_score(Y, self.predictions)),
+            100*precision_score(Y, self.predictions)),
             "\n ROC Score: {:.2f}".format(roc_auc_score(Y, self.predictions)))
+        print("Accuracy: {:.2f} % ".format(
+            100*accuracy_score(Y, self.predictions)))
         print('\n', classification_report(Y, self.predictions))
 
 
