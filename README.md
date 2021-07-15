@@ -17,4 +17,5 @@ Projects in Data Science, Machine Learning and Kaggle Competitions
 ### [Predict Future Sales](https://github.com/rafaelmgr12/ds-projects/tree/main/Predict-Future-Sales)
 ### [Home Credit Default Risk](https://github.com/rafaelmgr12/ds-projects/tree/main/Home-Credit-Default-Risk)
 ### [Titanic](https://github.com/rafaelmgr12/ds-projects/tree/main/Titanic)
+### [Translation Project](https://github.com/rafaelmgr12/ds-projects/tree/main/Translation-Project)
 ### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Desafios)
