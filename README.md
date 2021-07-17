@@ -18,4 +18,5 @@ Projects in Data Science, Machine Learning and Kaggle Competitions
 ### [Home Credit Default Risk](https://github.com/rafaelmgr12/ds-projects/tree/main/Home-Credit-Default-Risk)
 ### [Titanic](https://github.com/rafaelmgr12/ds-projects/tree/main/Titanic)
 ### [Translation Project](https://github.com/rafaelmgr12/ds-projects/tree/main/Translation-Project)
+### [NLP-Twitter](https://github.com/rafaelmgr12/ds-projects/tree/main/NLP-Twitter)
 ### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Desafios)
