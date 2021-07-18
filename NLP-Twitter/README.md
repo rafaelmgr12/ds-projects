@@ -1,6 +1,4 @@
-[] TODO implement BERT
-
-[![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/Titanic/Titanic.ipynb)
+[![Colab](https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/NLP-Twitter/NLP_Tweet.ipynb)
 # Natural Language Processing with Disaster Tweets
 Predict which Tweets are about real disasters and which ones are not
 
