@@ -1,3 +1,5 @@
+<a href="https://colab.research.google.com/github/rafaelmgr12/ds-projects/blob/main/MNIST-Kaggle/Mnist.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 # Digit Recognizer
 Learn computer vision fundamentals with the famous MNIST data
 ## **Start here if...**
