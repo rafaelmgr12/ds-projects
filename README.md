@@ -20,5 +20,6 @@ Projects in Data Science, Machine Learning and Kaggle Competitions
 ### [Translation Project](https://github.com/rafaelmgr12/ds-projects/tree/main/Translation-Project)
 ### [NLP-Twitter](https://github.com/rafaelmgr12/ds-projects/tree/main/NLP-Twitter)
 ### [Santander Customer Transaction](https://github.com/rafaelmgr12/ds-projects/tree/main/Santander-CT)
+### [MNIST Digit Recognizer](https://github.com/rafaelmgr12/ds-projects/tree/main/MNIST-Kaggle)
 ### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Desafios)
 
