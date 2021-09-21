@@ -22,5 +22,6 @@ Projects in Data Science, Machine Learning and Kaggle Competitions
 ### [Santander Customer Transaction](https://github.com/rafaelmgr12/ds-projects/tree/main/Santander-CT)
 ### [MNIST Digit Recognizer](https://github.com/rafaelmgr12/ds-projects/tree/main/MNIST-Kaggle)
 ### [CIFAR-10 - Object Recognition in Images](https://github.com/rafaelmgr12/ds-projects/tree/main/CIFAR-10)
+### [Tabular Playground in Kaggle](https://github.com/rafaelmgr12/ds-projects/tree/main/Tabular-Playground)
 ### [Desafios](https://github.com/rafaelmgr12/ds-projects/tree/main/Desafios)
 
